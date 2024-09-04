@@ -1,0 +1,35 @@
+#include <RTClib.h>  // Include the RTC library
+
+RTC_DS1307 rtc;  // Initialize the RTC module
+
+const int SOLAR_LIGHT_PIN = 13;  // Pin for solar light (LED)
+
+const int onHour = 18;  // Set on time (18:00)
+const int onMinute = 0;
+const int offHour = 22;  // Set off time (22:00)
+const int offMinute = 0;
+
+void setup() {
+  pinMode(SOLAR_LIGHT_PIN, OUTPUT);
+  rtc.begin();  // Initialize the RTC module
+}
+
+void loop() {
+  DateTime now = rtc.now();  // Get the current time
+  int currentHour = now.hour();
+  int currentMinute = now.minute();
+
+  if (currentHour >= onHour && currentHour <= offHour) {
+    if (currentHour == onHour && currentMinute >= onMinute) {
+      digitalWrite(SOLAR_LIGHT_PIN, HIGH);  // Turn on solar lights
+    } else if (currentHour == offHour && currentMinute < offMinute) {
+      digitalWrite(SOLAR_LIGHT_PIN, HIGH);  // Turn on solar lights
+    } else {
+      digitalWrite(SOLAR_LIGHT_PIN, LOW);  // Turn off solar lights
+    }
+  } else {
+    digitalWrite(SOLAR_LIGHT_PIN, LOW);  // Turn off solar lights
+  }
+
+  delay(60000);  // Wait for 1 minute before checking again
+}
