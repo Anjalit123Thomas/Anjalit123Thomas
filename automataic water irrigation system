@@ -1,0 +1,43 @@
+#code
+// Include libraries
+#include <RTClib.h>
+
+// Define sensor pins
+#define MOISTURE_PIN A0
+
+// Define water pump pin
+#define WATER_PUMP_PIN 9
+
+// Define RTC object
+RTC_DS1307 rtc;
+
+void setup() {
+  // Initialize RTC
+  rtc.begin();
+}
+
+void loop() {
+  // Read moisture sensor data
+  int moisture = analogRead(MOISTURE_PIN);
+
+  // Check if plants need water
+  if (moisture < 400) {
+    // Water plants for 10 seconds
+    digitalWrite(WATER_PUMP_PIN, HIGH);
+    delay(10000);
+    digitalWrite(WATER_PUMP_PIN, LOW);
+  }
+
+  // Wait 1 hour before checking again
+  delay(3600000);
+}
+#algorithum
+void loop() {
+  int moisture = readMoistureSensor();
+  if (moisture < threshold) {
+    if (isWithinWateringSchedule()) {
+      waterPlants();
+    }
+  }
+  wait(1 hour);
+}
